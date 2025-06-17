@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Online Banking System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="/CSS/login-style.css">
+
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .main-content {
+      flex: 1;
+    }
+
+    .card {
+      animation: fadeInUp 0.8s;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark px-4" style="background-color: rgba(103, 50, 10, 0.814);">
+    <a class="navbar-brand text-white" href="#">
+      <img src="/Images/logo.jpg" alt="Logo" width="50" />
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-white logout" href="login.html">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Dashboard Content -->
+  <div class="container-fluid py-5 main-content">
+    <h2 class="text-center mb-2 animate__animated animate__fadeInDown">
+      Welcome, <span class="text-primary" id="user-name">User</span>!
+    </h2>
+    <p class="text-center mb-5 animate__animated animate__fadeIn">What would you like to do today?</p>
+
+    <div class="row justify-content-center g-4 px-3">
+      <!-- Account Summary -->
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="card text-center shadow h-100 p-4 border-0">
+          <i class="fas fa-wallet fa-2x text-info mb-3"></i>
+          <h5>Account Summary</h5>
+          <a href="account-summary.html" class="btn btn-outline-info w-100 mt-3">View Summary</a>
+        </div>
+      </div>
+
+      <!-- Fund Transfer -->
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="card text-center shadow h-100 p-4 border-0">
+          <i class="fas fa-exchange-alt fa-2x text-success mb-3"></i>
+          <h5>Fund Transfer</h5>
+          <a href="fund-transfer.html" class="btn btn-outline-success w-100 mt-3">Transfer</a>
+        </div>
+      </div>
+
+      <!-- Mini Statement -->
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="card text-center shadow h-100 p-4 border-0">
+          <i class="fas fa-file-invoice-dollar fa-2x text-warning mb-3"></i>
+          <h5>Mini Statement</h5>
+          <a href="mini-statement.html" class="btn btn-outline-warning w-100 mt-3">View Statement</a>
+        </div>
+      </div>
+
+      <!-- Service Request -->
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="card text-center shadow h-100 p-4 border-0">
+          <i class="fas fa-tools fa-2x text-danger mb-3"></i>
+          <h5>Service Request</h5>
+          <a href="service-request.html" class="btn btn-outline-danger w-100 mt-3">Request</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer bg-dark text-white text-center py-3">
+    &copy; 2025 Online Banking System. All Rights Reserved.
+  </footer>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Example: dynamically fetch the logged-in username
+    const username = localStorage.getItem('bankEaseUsername') || 'User';
+    document.getElementById('user-name').textContent = username;
+  </script>
+</body>
+</html>
