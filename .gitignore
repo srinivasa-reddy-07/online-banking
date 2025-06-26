@@ -1,0 +1,38 @@
+# -------------------------------
+# Backend: Java + Maven + IntelliJ
+# -------------------------------
+
+# IntelliJ project files
+.idea/
+*.iml
+*.iws
+/out/
+
+# Maven build folder
+backend/target/
+backend/logs/
+
+# Compiled class files
+*.class
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# -------------------------------
+# Frontend: Node.js / React (if applicable)
+# -------------------------------
+
+# node modules and build
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+*.log
+
+# -------------------------------
+# General
+# -------------------------------
+
+*.log
+*.tmp
+application.properties
