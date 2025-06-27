@@ -1,3 +1,5 @@
+package org.example.onlineBankingSystem.model;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 

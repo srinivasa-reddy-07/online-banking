@@ -1,3 +1,5 @@
+package org.example.onlineBankingSystem.model;
+
 import java.sql.Timestamp;
 
 public record Ticket(
