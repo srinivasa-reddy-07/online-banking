@@ -1,0 +1,180 @@
+-- CREATE USER banking_system
+CREATE USER banking_system IDENTIFIED BY your_password;
+
+-- GRANT Access for different operations
+GRANT CONNECT TO banking_system;
+GRANT CREATE TABLE TO banking_system;
+GRANT CREATE SEQUENCE TO banking_system;
+GRANT CREATE VIEW TO banking_system;
+GRANT CREATE TRIGGER TO banking_system;
+GRANT CREATE PROCEDURE TO banking_system;
+GRANT UNLIMITED TABLESPACE TO banking_system;
+
+
+
+-- SEQUENCES for Auto-Increment Simulation
+CREATE SEQUENCE seq_banks START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE seq_customers START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE seq_accounts START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE seq_transactions START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE seq_ledger_entries START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE seq_tickets START WITH 1 INCREMENT BY 1;
+
+-- BANKS TABLE
+CREATE TABLE banks (
+    bank_id NUMBER PRIMARY KEY,
+    bank_name VARCHAR2(100) NOT NULL,
+    ifsc_code VARCHAR2(11) UNIQUE NOT NULL,
+    branch VARCHAR2(100),
+    address CLOB
+);
+
+-- CUSTOMERS TABLE
+CREATE TABLE customers (
+    customer_id NUMBER PRIMARY KEY,
+    full_name VARCHAR2(50) NOT NULL,
+    email VARCHAR2(255) UNIQUE NOT NULL,
+    password_hash VARCHAR2(255) NOT NULL,
+    phone VARCHAR2(20),
+    address CLOB,
+    status VARCHAR2(20) DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'INACTIVE', 'SUSPENDED')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ACCOUNTS TABLE
+CREATE TABLE accounts (
+    account_id NUMBER PRIMARY KEY,
+    customer_id NUMBER NOT NULL,
+    account_number VARCHAR2(20) UNIQUE NOT NULL,
+    bank_id NUMBER NOT NULL,
+    account_type VARCHAR2(20) CHECK (account_type IN ('SAVINGS', 'CHECKING', 'LIABILITY')),
+    opening_balance NUMBER(15, 2) NOT NULL,
+    cached_balance NUMBER(15, 2) NOT NULL,
+    status VARCHAR2(20) DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'CLOSED', 'FROZEN')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+    FOREIGN KEY (bank_id) REFERENCES banks(bank_id) ON DELETE CASCADE
+);
+
+-- TRANSACTIONS TABLE
+CREATE TABLE transactions (
+    transaction_id NUMBER PRIMARY KEY,
+    transaction_type VARCHAR2(20) CHECK (transaction_type IN ('DEPOSIT', 'WITHDRAWAL', 'TRANSFER')),
+    from_account_id NUMBER,
+    to_account_id NUMBER,
+    amount NUMBER(15, 2) CHECK (amount > 0),
+    remarks VARCHAR2(255),
+    status VARCHAR2(20) DEFAULT 'COMPLETED' CHECK (status IN ('PENDING', 'COMPLETED', 'FAILED')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CHECK (
+        (transaction_type = 'TRANSFER' AND from_account_id IS NOT NULL AND to_account_id IS NOT NULL) OR
+        (transaction_type = 'DEPOSIT' AND from_account_id IS NULL AND to_account_id IS NOT NULL) OR
+        (transaction_type = 'WITHDRAWAL' AND from_account_id IS NOT NULL AND to_account_id IS NULL)
+    ),
+    FOREIGN KEY (from_account_id) REFERENCES accounts(account_id),
+    FOREIGN KEY (to_account_id) REFERENCES accounts(account_id)
+);
+
+-- LEDGER_ENTRIES TABLE
+CREATE TABLE ledger_entries (
+    entry_id NUMBER PRIMARY KEY,
+    transaction_id NUMBER NOT NULL,
+    account_id NUMBER NOT NULL,
+    entry_type VARCHAR2(10) CHECK (entry_type IN ('DEBIT', 'CREDIT')),
+    amount NUMBER(15, 2) DEFAULT 0.00,
+    remarks VARCHAR2(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (transaction_id) REFERENCES transactions(transaction_id) ON DELETE CASCADE,
+    FOREIGN KEY (account_id) REFERENCES accounts(account_id) ON DELETE CASCADE
+);
+
+-- TICKETS TABLE
+CREATE TABLE tickets (
+    ticket_id NUMBER PRIMARY KEY,
+    customer_id NUMBER NOT NULL,
+    ticket_type VARCHAR2(50) CHECK (ticket_type IN (
+        'CHEQUE_BOOK_REQUEST',
+        'MOBILE_UPDATE',
+        'ACCOUNT_CLOSURE',
+        'GENERAL_ISSUE'
+    )),
+    description CLOB,
+    status VARCHAR2(20) DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'IN_PROGRESS', 'RESOLVED', 'REJECTED')),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+);
+
+-- INDEXES
+CREATE INDEX idx_customers_email ON customers(email);
+CREATE INDEX idx_accounts_customer_id ON accounts(customer_id);
+CREATE INDEX idx_ledger_entries_account_id ON ledger_entries(account_id);
+CREATE INDEX idx_ledger_entries_transaction_id ON ledger_entries(transaction_id);
+CREATE INDEX idx_ledger_entries_created_at ON ledger_entries(created_at);
+CREATE INDEX idx_transactions_from_account_id ON transactions(from_account_id);
+CREATE INDEX idx_transactions_to_account_id ON transactions(to_account_id);
+CREATE INDEX idx_transaction_created_at ON transactions(created_at);
+CREATE INDEX idx_ticket_customer_id ON tickets(customer_id);
+
+-- TRIGGERS FOR AUTO-INCREMENT BEHAVIOR
+CREATE OR REPLACE TRIGGER trg_banks_ai
+BEFORE INSERT ON banks
+FOR EACH ROW
+BEGIN
+  IF :NEW.bank_id IS NULL THEN
+    SELECT seq_banks.NEXTVAL INTO :NEW.bank_id FROM dual;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_customers_ai
+BEFORE INSERT ON customers
+FOR EACH ROW
+BEGIN
+  IF :NEW.customer_id IS NULL THEN
+    SELECT seq_customers.NEXTVAL INTO :NEW.customer_id FROM dual;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_accounts_ai
+BEFORE INSERT ON accounts
+FOR EACH ROW
+BEGIN
+  IF :NEW.account_id IS NULL THEN
+    SELECT seq_accounts.NEXTVAL INTO :NEW.account_id FROM dual;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_transactions_ai
+BEFORE INSERT ON transactions
+FOR EACH ROW
+BEGIN
+  IF :NEW.transaction_id IS NULL THEN
+    SELECT seq_transactions.NEXTVAL INTO :NEW.transaction_id FROM dual;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_ledger_entries_ai
+BEFORE INSERT ON ledger_entries
+FOR EACH ROW
+BEGIN
+  IF :NEW.entry_id IS NULL THEN
+    SELECT seq_ledger_entries.NEXTVAL INTO :NEW.entry_id FROM dual;
+  END IF;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_tickets_ai
+BEFORE INSERT ON tickets
+FOR EACH ROW
+BEGIN
+  IF :NEW.ticket_id IS NULL THEN
+    SELECT seq_tickets.NEXTVAL INTO :NEW.ticket_id FROM dual;
+  END IF;
+END;
+/

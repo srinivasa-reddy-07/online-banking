@@ -1,0 +1,166 @@
+-- Banks
+INSERT INTO banks (bank_name, ifsc_code, branch, address)
+VALUES ('State Bank of India', 'SBIN0000456', 'Mumbai Main', 'State Bank Bhavan, Nariman Point, Mumbai, Maharashtra');
+
+INSERT INTO banks (bank_name, ifsc_code, branch, address)
+VALUES ('HDFC Bank', 'HDFC0001234', 'Delhi Connaught', 'A-Block, Connaught Place, New Delhi, Delhi');
+
+INSERT INTO banks (bank_name, ifsc_code, branch, address)
+VALUES ('ICICI Bank', 'ICIC0000789', 'Bangalore Central', 'MG Road, Bangalore, Karnataka');
+
+INSERT INTO banks (bank_name, ifsc_code, branch, address)
+VALUES ('Axis Bank', 'UTIB0000567', 'Chennai T Nagar', 'T Nagar Branch, Chennai, Tamil Nadu');
+
+INSERT INTO banks (bank_name, ifsc_code, branch, address)
+VALUES ('Punjab National Bank', 'PUNB0012345', 'Kolkata Park Street', 'Park Street Branch, Kolkata, West Bengal');
+
+
+
+-- Customers
+INSERT INTO customers (full_name, email, password_hash, phone, address, status)
+VALUES ('Amit Sharma', 'amit.sharma@example.com', 'amit123', '9876543210', '123 Green Avenue, Mumbai, Maharashtra', 'ACTIVE');
+
+INSERT INTO customers (full_name, email, password_hash, phone, address, status)
+VALUES ('Sneha Verma', 'sneha.verma@example.com', 'sneha456', '9812345678', 'Flat 4B, Silver Heights, Delhi', 'ACTIVE');
+
+INSERT INTO customers (full_name, email, password_hash, phone, address, status)
+VALUES ('Rajeev Menon', 'rajeev.menon@example.com', 'rajeev789', '9123456789', 'Villa No. 7, Tech Park, Bangalore, Karnataka', 'INACTIVE');
+
+INSERT INTO customers (full_name, email, password_hash, phone, address, status)
+VALUES ('Priya Das', 'priya.das@example.com', 'priya321', '9001234567', 'Plot 16, Salt Lake, Kolkata, West Bengal', 'ACTIVE');
+
+INSERT INTO customers (full_name, email, password_hash, phone, address, status)
+VALUES ('Farhan Khan', 'farhan.khan@example.com', 'farhan654', '9898989898', '10 Residency Road, Hyderabad, Telangana', 'SUSPENDED');
+
+INSERT INTO customers (full_name, email, password_hash, phone, address, status)
+VALUES ('Neha Mehta', 'neha.mehta@example.com', 'neha987', '9112233445', 'H-91, Sector 50, Noida, Uttar Pradesh', 'ACTIVE');
+
+
+
+-- Accounts
+INSERT INTO accounts (customer_id, account_number, bank_id, account_type, opening_balance, cached_balance, status)
+VALUES (1, 'SBIN0001001', 1, 'SAVINGS', 0, 0, 'ACTIVE');
+
+INSERT INTO accounts (customer_id, account_number, bank_id, account_type, opening_balance, cached_balance, status)
+VALUES (2, 'HDFC0002002', 2, 'CHECKING', 0, 0, 'ACTIVE');
+
+INSERT INTO accounts (customer_id, account_number, bank_id, account_type, opening_balance, cached_balance, status)
+VALUES (3, 'ICIC0003003', 3, 'SAVINGS', 0, 0, 'ACTIVE');
+
+INSERT INTO accounts (customer_id, account_number, bank_id, account_type, opening_balance, cached_balance, status)
+VALUES (4, 'PNB0004004', 4, 'SAVINGS', 0, 0, 'ACTIVE');
+
+INSERT INTO accounts (customer_id, account_number, bank_id, account_type, opening_balance, cached_balance, status)
+VALUES (5, 'AXIS0005005', 5, 'SAVINGS', 0, 0, 'ACTIVE');
+
+
+
+
+-- Transactions
+-- 1. Deposit 5000 to Account 1 
+INSERT INTO transactions (transaction_type, from_account_id, to_account_id, amount, remarks)
+VALUES ('DEPOSIT', NULL, 1, 5000.00, 'Initial deposit');
+
+-- 2. Deposit 5000 to Account 2
+INSERT INTO transactions (transaction_type, from_account_id, to_account_id, amount, remarks)
+VALUES ('DEPOSIT', NULL, 2, 5000.00, 'Initial deposit');
+
+-- 3. Deposit 5000 to Account 3
+INSERT INTO transactions (transaction_type, from_account_id, to_account_id, amount, remarks)
+VALUES ('DEPOSIT', NULL, 3, 5000.00, 'Initial deposit');
+
+-- 4. Deposit 5000 to Account 4
+INSERT INTO transactions (transaction_type, from_account_id, to_account_id, amount, remarks)
+VALUES ('DEPOSIT', NULL, 4, 5000.00, 'Initial deposit');
+
+-- 5. Deposit 5000 to Account 5
+INSERT INTO transactions (transaction_type, from_account_id, to_account_id, amount, remarks)
+VALUES ('DEPOSIT', NULL, 5, 5000.00, 'Initial deposit');
+
+-- 6. Transfer 1500 from Account 3 to Account 1
+INSERT INTO transactions (transaction_type, from_account_id, to_account_id, amount, remarks)
+VALUES ('TRANSFER', 3, 1, 1500.00, 'Refund');
+
+-- 7. Transfer 3000 from Account 4 to Account 5
+INSERT INTO transactions (transaction_type, from_account_id, to_account_id, amount, remarks)
+VALUES ('TRANSFER', 4, 5, 3000.00, 'Gift');
+
+-- 8. Transfer 500 from Account 5 to Account 2
+INSERT INTO transactions (transaction_type, from_account_id, to_account_id, amount, remarks)
+VALUES ('TRANSFER', 5, 2, 500.00, 'Loan repayment');
+
+-- 9. Transfer 1200 from Account 2 to Account 1
+INSERT INTO transactions (transaction_type, from_account_id, to_account_id, amount, remarks)
+VALUES ('TRANSFER', 2, 1, 1200.00, 'Loan repayment');
+
+-- 10. Transfer 3500 from Account 1 to Account 4
+INSERT INTO transactions (transaction_type, from_account_id, to_account_id, amount, remarks)
+VALUES ('TRANSFER', 1, 4, 3500.00, 'Loan repayment');
+
+
+
+
+-- Ledger Entries
+-- Transaction 1: DEPOSIT 5000 to Account 1
+INSERT INTO ledger_entries (transaction_id, account_id, entry_type, amount, remarks)
+VALUES (1, 1, 'CREDIT', 5000.00, 'Deposit');
+
+-- Transaction 2: DEPOSIT to Account 2
+INSERT INTO ledger_entries (transaction_id, account_id, entry_type, amount, remarks)
+VALUES (2, 2, 'CREDIT', 5000.00, 'Deposit');
+
+-- Transaction 3: DEPOSIT to Account 1
+INSERT INTO ledger_entries (transaction_id, account_id, entry_type, amount, remarks)
+VALUES (3, 3, 'CREDIT', 5000.00, 'Deposit');
+
+-- Transaction 4: DEPOSIT to Account 1
+INSERT INTO ledger_entries (transaction_id, account_id, entry_type, amount, remarks)
+VALUES (4, 4, 'CREDIT', 5000.00, 'Deposit');
+
+-- Transaction 5: DEPOSIT to Account 1
+INSERT INTO ledger_entries (transaction_id, account_id, entry_type, amount, remarks)
+VALUES (5, 5, 'CREDIT', 5000.00, 'Deposit');
+
+-- Transaction 6: TRANSFER 1500 from Account 3 to Account 1
+INSERT INTO ledger_entries (transaction_id, account_id, entry_type, amount, remarks)
+VALUES (6, 3, 'DEBIT', 1500.00, 'Transfer to Account 1');
+INSERT INTO ledger_entries (transaction_id, account_id, entry_type, amount, remarks)
+VALUES (6, 1, 'CREDIT', 1500.00, 'Transfer from Account 3');
+
+-- Transaction 7: TRANSFER 3000 from Account 4 to Account 5
+INSERT INTO ledger_entries (transaction_id, account_id, entry_type, amount, remarks)
+VALUES (7, 4, 'DEBIT', 3000.00, 'Transfer to Account 5');
+INSERT INTO ledger_entries (transaction_id, account_id, entry_type, amount, remarks)
+VALUES (7, 5, 'CREDIT', 3000.00, 'Transfer from Account 4');
+
+-- Transaction 8: TRANSFER 500 from Account 5 to Account 2
+INSERT INTO ledger_entries (transaction_id, account_id, entry_type, amount, remarks)
+VALUES (8, 5, 'DEBIT', 500.00, 'Transfer to Account 2');
+INSERT INTO ledger_entries (transaction_id, account_id, entry_type, amount, remarks)
+VALUES (8, 2, 'CREDIT', 500.00, 'Transfer from Account 5');
+
+-- Transaction 9: TRANSFER 1200 from Account 2 to Account 1
+INSERT INTO ledger_entries (transaction_id, account_id, entry_type, amount, remarks)
+VALUES (9, 2, 'DEBIT', 1200.00, 'Transfer to Account 2');
+INSERT INTO ledger_entries (transaction_id, account_id, entry_type, amount, remarks)
+VALUES (9, 1, 'CREDIT', 1200.00, 'Transfer from Account 5');
+
+-- Transaction 10: TRANSFER 3500 from Account 1 to Account 4
+INSERT INTO ledger_entries (transaction_id, account_id, entry_type, amount, remarks)
+VALUES (10, 1, 'DEBIT', 3500.00, 'Transfer to Account 2');
+INSERT INTO ledger_entries (transaction_id, account_id, entry_type, amount, remarks)
+VALUES (10, 4, 'CREDIT', 3500.00, 'Transfer from Account 5');
+
+
+
+
+-- UPDATE the cached_balance in accounts
+UPDATE accounts SET cached_balance = 4200.00 WHERE account_id = 1;
+UPDATE accounts SET cached_balance = 4300.00  WHERE account_id = 2;
+UPDATE accounts SET cached_balance = 3500.00  WHERE account_id = 3;
+UPDATE accounts SET cached_balance = 5500.00 WHERE account_id = 4;
+UPDATE accounts SET cached_balance = 7500.00   WHERE account_id = 5;
+
+
+
+-- Tickets
