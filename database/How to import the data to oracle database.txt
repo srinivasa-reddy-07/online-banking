@@ -1,0 +1,32 @@
+Option 1: By creating an oracle database/schema with name "banking_system" and executing all the queries present in "Banking Database Creation in Orace.txt" file and then in "Banking data Insertion in Oracle.txt" file.
+
+Option 2: Create a new user/schema with username as "banking_system"
+  Step 1: Create a new user with user name as "banking_system" and some password
+
+          CREATE USER banking_system IDENTIFIED BY passgroup3;
+
+  Step 2: GRANT required privileges for different operations to banking_system
+
+          GRANT CONNECT TO banking_system;
+          GRANT CREATE TABLE TO banking_system;
+          GRANT CREATE SEQUENCE TO banking_system;
+          GRANT CREATE VIEW TO banking_system;
+          GRANT CREATE TRIGGER TO banking_system;
+          GRANT CREATE PROCEDURE TO banking_system;
+          GRANT UNLIMITED TABLESPACE TO banking_system;
+
+  Step 3: Create a new connection for banking_system by providing the required credentials.
+  Step 4: Make sure you are connected to banking_system and once connected, run the banking_system.sql file:
+
+	 1. Open your .sql file:
+
+            Go to File > Open or press Ctrl + O.
+            Locate the banking_system.sql file and open it.
+
+	 2. The file opens in a SQL worksheet. Now:
+
+	    Make sure the worksheet is connected to TEST_DB.
+	    (Check the top-right of the worksheet — choose BANKING_SYSTEM from the dropdown if not selected.)
+
+	    Click the Run Script button (F5) or right-click and choose Run as Script.
+
